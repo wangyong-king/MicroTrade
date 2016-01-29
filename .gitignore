@@ -1,0 +1,8 @@
+#不跟踪所有class、iml类型的文件
+*.class
+*.iml
+
+
+#不跟踪下面的目录
+/target
+/.idea
