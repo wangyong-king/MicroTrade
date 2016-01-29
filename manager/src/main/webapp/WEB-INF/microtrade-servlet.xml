@@ -60,15 +60,15 @@
 		cache-manager="cacheManager" /> -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
 	
-	<!-- 避免IE在ajax请求时，返回json出现下载 -->
-	<bean id="jacksonMessageConverter"
-		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-		<property name="supportedMediaTypes">
-			<list>
-				<value>text/html;charset=UTF-8</value>
-			</list>
-		</property>
-	</bean>
+	<!--&lt;!&ndash; 避免IE在ajax请求时，返回json出现下载 &ndash;&gt;-->
+	<!--<bean id="jacksonMessageConverter"-->
+		<!--class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+		<!--<property name="supportedMediaTypes">-->
+			<!--<list>-->
+				<!--<value>text/html;charset=UTF-8</value>-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
 	
 	<!-- ①注册ConversionService -->
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
@@ -85,15 +85,15 @@
 	</bean>
 	
 	<!-- 3 -->
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">  
-		<property name="webBindingInitializer" ref="webBindingInitializer"/>  
-		<property name="messageConverters">
-            <list>
-                <bean class="cn.datai.springwebframework.http.converter.UTF8StringHttpMessageConverter"/>
-                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
-            </list>
-        </property>
-	</bean>  
+	<!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">  -->
+		<!--<property name="webBindingInitializer" ref="webBindingInitializer"/>  -->
+		<!--<property name="messageConverters">-->
+            <!--<list>-->
+                <!--<bean class="cn.datai.springwebframework.http.converter.UTF8StringHttpMessageConverter"/>-->
+                <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />-->
+            <!--</list>-->
+        <!--</property>-->
+	<!--</bean>  -->
 	
     <mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
     <mvc:default-servlet-handler/>
