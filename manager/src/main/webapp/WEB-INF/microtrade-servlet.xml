@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/task  
+		http://www.springframework.org/schema/task/spring-task-3.1.xsd"> 
+	<task:annotation-driven/> 
+	<context:annotation-config/>  
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
+	<context:component-scan base-package="cn.datai.microtrade.manager.controller"></context:component-scan>
+	<context:component-scan base-package="cn.datai.microtrade.manager.service"></context:component-scan>
+	<context:component-scan base-package="cn.datai.microtrade.manager.dao"></context:component-scan>
+
+	<mvc:resources location="/js/" mapping="/js/**"/>
+	<mvc:resources location="/images/" mapping="/images/**"/>
+	<mvc:resources location="/css/" mapping="/css/**"/>
+	<mvc:resources location="/thirdparty/" mapping="/thirdparty/**"/>
+
+	
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="siteLanguage" />
+	</bean>
+
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	 
+	<bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor" />
+			</list>
+		</property>
+		<!--<property name="mappings">-->
+			<!--<value>-->
+				<!--/*/*.do=normalController-->
+				<!--/*/*.json=jsonController-->
+				<!--/*/*.xml=jsonController-->
+				<!--/**/*.htm=initController-->
+			<!--</value>-->
+		<!--</property>-->
+	</bean>
+	
+	
+	<!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 <cache:annotation-driven 
+		cache-manager="cacheManager" /> -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+	
+	<!--&lt;!&ndash; 避免IE在ajax请求时，返回json出现下载 &ndash;&gt;-->
+	<!--<bean id="jacksonMessageConverter"-->
+		<!--class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+		<!--<property name="supportedMediaTypes">-->
+			<!--<list>-->
+				<!--<value>text/html;charset=UTF-8</value>-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
+	
+	<!-- ①注册ConversionService -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	    <property name="converters">
+	       <set>
+	            <bean class="cn.datai.springwebframework.format.support.DateConverter" />
+	        </set>
+	    </property>
+	</bean>
+	
+	<!-- ②使用ConfigurableWebBindingInitializer注册conversionService -->  
+	<bean id="webBindingInitializer" class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">  
+	    <property name="conversionService" ref="conversionService"/>  
+	</bean>
+	
+	<!-- 3 -->
+	<!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">  -->
+		<!--<property name="webBindingInitializer" ref="webBindingInitializer"/>  -->
+		<!--<property name="messageConverters">-->
+            <!--<list>-->
+                <!--<bean class="cn.datai.springwebframework.http.converter.UTF8StringHttpMessageConverter"/>-->
+                <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />-->
+            <!--</list>-->
+        <!--</property>-->
+	<!--</bean>  -->
+	
+    <mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+    <mvc:default-servlet-handler/>
+    <context:property-placeholder location="classpath*:*.properties" />
+    
+    <!--&lt;!&ndash; 拦截器  &ndash;&gt;-->
+    <!--<mvc:interceptors>-->
+        <!--&lt;!&ndash; token拦截器&ndash;&gt; -->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/sys/**"/>-->
+            <!--<mvc:mapping path="/personal/**"/>-->
+            <!--<mvc:mapping path="/organization/**"/>-->
+            <!--<mvc:mapping path="/security/usermanager/**"/>-->
+            <!--<bean class="com.dyyt.common.filter.TokenInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors> -->
+</beans>
