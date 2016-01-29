@@ -13,6 +13,7 @@
         <module>weixin</module>
         <module>manager</module>
         <module>TradeCore</module>
+        <module>SpringWebFramework</module>
     </modules>
 
 
