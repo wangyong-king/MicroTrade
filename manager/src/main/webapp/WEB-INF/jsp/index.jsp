@@ -23,6 +23,7 @@
     </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>六合数字城管</title>
+    <title>六合数字城管</title>
   </head>
   <body>
 
